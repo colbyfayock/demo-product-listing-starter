@@ -16,7 +16,7 @@ const Header = () => {
         </p>
         <ul className={styles.headerLinks}>
           <li>
-            <a href="/">
+            <a href="https://github.com/colbyfayock/demo-product-listing-starter" rel="noreferrer">
               <FaGithub />
             </a>
           </li>
