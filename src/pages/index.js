@@ -22,19 +22,21 @@ export default function Home({ products, categories }) {
       <Section>
         <Container className={styles.homeContainer}>
           <div className={styles.sidebar}>
-            <form>
-              <div className={`${styles.sidebarSection} ${styles.sidebarSearch}`}>
+            <div className={`${styles.sidebarSection} ${styles.sidebarSearch}`}>
+              <form>
                 <h2><label>Search</label></h2>
-                <input type="search" />
-              </div>
-              <div className={`${styles.sidebarSection} ${styles.sidebarCategories}`}>
-                <h2>Categories</h2>
+                <input type="search" name="query" />
+              </form>
+            </div>
+            <div className={`${styles.sidebarSection} ${styles.sidebarCategories}`}>
+              <h2>Categories</h2>
+              <form>
                 <ul className={styles.checklist}>
                   { categories.map(category => {
                     return (
                       <li key={category}>
-                        <label className={styles.checkbox}>
-                          <input className="sr-only" type="checkbox" />
+                        <label className={styles.radio}>
+                          <input className="sr-only" type="radio" name="category" value={category.name} />
                           <span><FaCheck /></span>
                           { category }
                         </label>
@@ -42,8 +44,8 @@ export default function Home({ products, categories }) {
                     )
                   }) }
                 </ul>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
 
           <h2 className="sr-only">Products</h2>
