@@ -59,10 +59,10 @@ export default function Home({ products, categories }) {
                     <a href={product.url} rel="noopener noreferrer">{ product.title }</a>
                   </h3>
                   <p className={styles.productRating}>
-                    <FaStar /> { product.rating.rate } ({ product.rating.count })
+                    <FaStar /> { product.rating_rate } ({ product.rating_count })
                   </p>
                   <p className={styles.productPrice}>
-                    ${ product.price.toFixed(2)}
+                    ${ (product.price / 100).toFixed(2)}
                   </p>
                 </li>
               )
@@ -75,8 +75,24 @@ export default function Home({ products, categories }) {
 }
 
 export async function getStaticProps() {
-  const products = await fetch('https://fakestoreapi.com/products').then(r => r.json());
+  const productData = await fetch('https://fakestoreapi.com/products').then(r => r.json());
+
+  const products = productData.map(item => {
+    const product = {
+      ...item,
+      rating_rate: item.rating.rate,
+      rating_count: item.rating.count,
+      price: item.price * 100
+    }
+
+    delete product.rating;
+    delete product.description;
+
+    return product;
+  });
+
   const categories = Array.from(new Set(products.map(({ category }) => category)));
+
   return {
     props: {
       products,
