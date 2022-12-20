@@ -32,6 +32,13 @@ export default function Home({ products, categories }) {
               <h2>Categories</h2>
               <form>
                 <ul className={styles.checklist}>
+                  <li>
+                    <label className={styles.radio}>
+                      <input className="sr-only" type="radio" name="category" value={false} defaultChecked />
+                      <span><FaCheck /></span>
+                      all
+                    </label>
+                  </li>
                   { categories.map(category => {
                     return (
                       <li key={category}>
