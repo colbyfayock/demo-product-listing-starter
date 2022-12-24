@@ -8,12 +8,14 @@ import Container from '@components/Container';
 
 import styles from '@styles/Home.module.scss';
 
+import amazonProducts from '@data/amazoncom-sample-50.csv';
+
 export default function Home({ products, categories }) {
   return (
     <Layout>
       <Head>
         <title>Cool Store</title>
-        <meta name="description" content="My shows tracked!" />
+        <meta name="description" content="My cool store!" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -36,14 +38,14 @@ export default function Home({ products, categories }) {
                     <label className={styles.radio}>
                       <input className="sr-only" type="radio" name="category" value={false} defaultChecked />
                       <span><FaCheck /></span>
-                      all
+                      All
                     </label>
                   </li>
                   { categories.map(category => {
                     return (
                       <li key={category}>
                         <label className={styles.radio}>
-                          <input className="sr-only" type="radio" name="category" value={category.name} />
+                          <input className="sr-only" type="radio" name="category" value={category} />
                           <span><FaCheck /></span>
                           { category }
                         </label>
@@ -61,17 +63,14 @@ export default function Home({ products, categories }) {
             {products.map(product => {
               return (
                 <li key={product.id}>
-                  <a className={styles.productImageWrapper} href={product.url} rel="noopener noreferrer">
-                    <Image width="370" height="640" src={product.image} alt={`${product.name} Poster`} />
+                  <a className={styles.productImageWrapper} href={product.productUrl} rel="noopener noreferrer">
+                    <Image width="370" height="640" src={product.image} alt={`${product.productName} Poster`} />
                   </a>
                   <h3 className={styles.productsTitle}>
-                    <a href={product.url} rel="noopener noreferrer">{ product.title }</a>
+                    <a href={product.url} rel="noopener noreferrer">{ product.productName }</a>
                   </h3>
-                  <p className={styles.productRating}>
-                    <FaStar /> { product.rating_rate } ({ product.rating_count })
-                  </p>
                   <p className={styles.productPrice}>
-                    ${ (product.price / 100).toFixed(2)}
+                    {product.sellingPrice}
                   </p>
                 </li>
               )
@@ -84,23 +83,21 @@ export default function Home({ products, categories }) {
 }
 
 export async function getStaticProps() {
-  const productData = await fetch('https://fakestoreapi.com/products').then(r => r.json());
-
-  const products = productData.map(item => {
-    const product = {
-      ...item,
-      rating_rate: item.rating.rate,
-      rating_count: item.rating.count,
-      price: item.price * 100
+  const products = amazonProducts.map(product => {
+    return {
+      id: product['Uniq Id'],
+      productName: product['Product Name'],
+      category: product['Category'],
+      sellingPrice: product['Selling Price'],
+      image: product['Image'],
+      productUrl: product['Product Url'],
     }
-
-    delete product.rating;
-    delete product.description;
-
-    return product;
   });
 
-  const categories = Array.from(new Set(products.map(({ category }) => category)));
+  const categories = Array.from(new Set(products.map(({ category }) => {
+    if ( !category ) return;
+    return category.split(' | ')[0];
+  }))).filter(c => !!c).sort();
 
   return {
     props: {
