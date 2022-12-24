@@ -11,7 +11,7 @@ const Header = () => {
       <Container className={styles.headerContainer}>
         <p className={styles.headerTitle}>
           <Link href="/">
-            Cool Clothes
+            Cool Store
           </Link>
         </p>
         <ul className={styles.headerLinks}>
