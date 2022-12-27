@@ -1,6 +1,8 @@
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { FaStar, FaCheck } from 'react-icons/fa';
+import { useDebouncedCallback } from 'use-debounce';
 
 import Layout from '@components/Layout';
 import Section from '@components/Section';
@@ -11,6 +13,31 @@ import styles from '@styles/Home.module.scss';
 import amazonProducts from '@data/amazoncom-sample-50.csv';
 
 export default function Home({ products, categories }) {
+  const [searchQuery, setSearchQuery] = useState();
+  const [searchCategory, setSearchCategory] = useState();
+
+  // Add debouncing when setting query state to avoid making quick, repetitive
+  // requests for every single letter typed
+
+  const debouncedSetSearchQuery = useDebouncedCallback((value) => setSearchQuery(value), 500);
+
+  /**
+   * handleOnSearch
+   */
+
+  function handleOnSearch(e) {
+    debouncedSetSearchQuery(e.currentTarget.value);
+  }
+
+  /**
+   * handleOnCategorySelect
+   */
+
+  function handleOnCategorySelect(e) {
+    const radio = Array.from(e.currentTarget.elements).find(({ checked }) => checked);
+    setSearchCategory(radio.value);
+  }
+
   return (
     <Layout>
       <Head>
@@ -27,12 +54,12 @@ export default function Home({ products, categories }) {
             <div className={`${styles.sidebarSection} ${styles.sidebarSearch}`}>
               <form>
                 <h2><label>Search</label></h2>
-                <input type="search" name="query" />
+                <input type="search" name="query" onChange={handleOnSearch} />
               </form>
             </div>
             <div className={`${styles.sidebarSection} ${styles.sidebarCategories}`}>
               <h2>Categories</h2>
-              <form>
+              <form onChange={handleOnCategorySelect}>
                 <ul className={styles.checklist}>
                   <li>
                     <label className={styles.radio}>
