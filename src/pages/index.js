@@ -121,10 +121,7 @@ export async function getStaticProps() {
     }
   });
 
-  const categories = Array.from(new Set(products.map(({ category }) => {
-    if ( !category ) return;
-    return category.split(' | ')[0];
-  }))).filter(c => !!c).sort();
+  const categories = Array.from(new Set(products.map(({ category }) => category))).filter(c => !!c).sort();
 
   return {
     props: {
