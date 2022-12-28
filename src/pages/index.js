@@ -63,7 +63,7 @@ export default function Home({ products, categories }) {
                 <ul className={styles.checklist}>
                   <li>
                     <label className={styles.radio}>
-                      <input className="sr-only" type="radio" name="category" value={false} defaultChecked />
+                      <input className="sr-only" type="radio" name="category" value={undefined} defaultChecked />
                       <span><FaCheck /></span>
                       All
                     </label>
