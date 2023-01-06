@@ -19,7 +19,7 @@ export default function Home({ products, categories }) {
   // Add debouncing when setting query state to avoid making quick, repetitive
   // requests for every single letter typed
 
-  const debouncedSetSearchQuery = useDebouncedCallback((value) => setSearchQuery(value), 500);
+  const debouncedSetSearchQuery = useDebouncedCallback((value) => setSearchQuery(value), 300);
 
   /**
    * handleOnSearch
