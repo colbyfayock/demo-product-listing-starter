@@ -120,3 +120,16 @@
   margin: .7em 0 0;
 }
 
+.productPriceSale {
+  color: green;
+  font-weight: bold;
+  margin-right: .5em;
+}
+
+.productPriceSelling {
+
+  [data-is-sale="true"] & {
+    text-decoration: line-through;
+  }
+
+}

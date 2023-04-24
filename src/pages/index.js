@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
-import { FaStar, FaCheck } from 'react-icons/fa';
+import Link from 'next/link';
+import { FaCheck } from 'react-icons/fa';
 import { useDebouncedCallback } from 'use-debounce';
 
 import Layout from '@components/Layout';
@@ -90,14 +91,15 @@ export default function Home({ products, categories }) {
             {products.map(product => {
               return (
                 <li key={product.id}>
-                  <a className={styles.productImageWrapper} href={product.productUrl} rel="noopener noreferrer">
+                  <Link className={styles.productImageWrapper} href={`/products/${product.id}`} rel="noopener noreferrer">
                     <Image width="370" height="640" src={product.image} alt={`${product.productName} Poster`} />
-                  </a>
+                  </Link>
                   <h3 className={styles.productsTitle}>
-                    <a href={product.url} rel="noopener noreferrer">{ product.productName }</a>
+                    <Link href={`/products/${product.id}`} rel="noopener noreferrer">{ product.productName }</Link>
                   </h3>
-                  <p className={styles.productPrice}>
-                    {product.sellingPrice}
+                  <p className={styles.productPrice} data-is-sale={product.salePrice && product.salePrice !== product.sellingPrice}>
+                    {product.salePrice && (<span className={styles.productPriceSale}>{product.salePrice}</span>)}
+                    <span className={styles.productPriceSelling}>{product.sellingPrice}</span>
                   </p>
                 </li>
               )
@@ -118,8 +120,10 @@ export async function getStaticProps() {
       sellingPrice: product['Selling Price'],
       image: product['Image'],
       productUrl: product['Product Url'],
+      // salePrice: `$${(parseFloat(product['Selling Price'].replace('$', '')) * .8).toFixed(2)}`
     }
   });
+  
 
   const categories = Array.from(new Set(products.map(({ category }) => category))).filter(c => !!c).sort();
 

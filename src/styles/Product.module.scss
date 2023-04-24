@@ -1,0 +1,42 @@
+@import "@styles/settings/_settings";
+
+.productContainer {
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 2em;
+
+  @media (min-width: 720px) {
+    grid-template-columns: 4fr 5fr;
+  }
+
+}
+
+.productImage {
+  width: 100%;
+  height: auto;
+}
+
+.productCategory {
+  font-size: 1.2em;
+  margin: .7em 0 1em;
+}
+
+.productPrice {
+  font-size: 1.6em;
+  margin: .7em 0 1em;
+}
+
+.productPriceSale {
+  color: green;
+  font-weight: bold;
+  margin-right: .5em;
+}
+
+.productPriceSelling {
+
+  [data-is-sale="true"] & {
+    text-decoration: line-through;
+  }
+
+}
